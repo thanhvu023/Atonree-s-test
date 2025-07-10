@@ -3,10 +3,12 @@ import { products as mockProducts } from '../api/products';
 import ProductList from '../components/ProductList';
 import HeroBanner from '../components/HeroBanner';
 import SearchPanel from '../components/SearchPanel';
+import ProductModal from '../components/ProductModal';
 
 const Home = () => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Callback cho nút gợi ý AI (sẽ làm sau)
   const handleSuggest = () => {
@@ -40,7 +42,10 @@ const Home = () => {
         onFind={handleFind}
       />
       <h2 style={{textAlign: 'center', margin: '32px 0 16px 0'}}>Danh sách sản phẩm</h2>
-      <ProductList products={filteredProducts} />
+      <ProductList products={filteredProducts} onDetail={setSelectedProduct} />
+      {selectedProduct && (
+        <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
+      )}
     </div>
   );
 };

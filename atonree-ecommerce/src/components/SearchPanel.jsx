@@ -1,5 +1,5 @@
 import React from 'react';
-import './SearchPanel.css';
+import '../styles/SearchPanel.css';
 import { FaSearch } from 'react-icons/fa';
 
 const SearchPanel = ({ search, onSearchChange, filter, onFilterChange, onSuggest, onFind }) => {
