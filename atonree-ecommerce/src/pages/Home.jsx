@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import { products as mockProducts } from '../api/products';
 import ProductList from '../components/ProductList';
-import SearchBar from '../components/SearchBar';
-import Filter from '../components/Filter';
+import HeroBanner from '../components/HeroBanner';
+import SearchPanel from '../components/SearchPanel';
 
 const Home = () => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
+
+  // Callback cho nút gợi ý AI (sẽ làm sau)
+  const handleSuggest = () => {
+    alert('Gợi ý sản phẩm phù hợp (sẽ tích hợp AI sau)');
+  };
+
+  // Callback cho nút tìm kiếm (có thể dùng chung với input)
+  const handleFind = () => {
+    // Có thể trigger lại filter nếu muốn
+  };
 
   // Lọc sản phẩm theo tên và giá
   const filteredProducts = mockProducts.filter((product) => {
@@ -20,9 +30,16 @@ const Home = () => {
 
   return (
     <div>
-      <h2>Danh sách sản phẩm</h2>
-      <SearchBar value={search} onChange={e => setSearch(e.target.value)} />
-      <Filter value={filter} onChange={e => setFilter(e.target.value)} />
+      <HeroBanner />
+      <SearchPanel
+        search={search}
+        onSearchChange={e => setSearch(e.target.value)}
+        filter={filter}
+        onFilterChange={e => setFilter(e.target.value)}
+        onSuggest={handleSuggest}
+        onFind={handleFind}
+      />
+      <h2 style={{textAlign: 'center', margin: '32px 0 16px 0'}}>Danh sách sản phẩm</h2>
       <ProductList products={filteredProducts} />
     </div>
   );

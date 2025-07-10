@@ -1,0 +1,75 @@
+.antoree-header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 24px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  height: 40px;
+}
+.nav-menu {
+  display: flex;
+  gap: 32px;
+}
+.nav-menu a {
+  font-family: 'Roboto', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.2s, border-bottom 0.2s;
+  padding-bottom: 2px;
+}
+.nav-menu a:hover {
+  color: #27ae60;
+  border-bottom: 2px solid #27ae60;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.cta-btn {
+  background: #FF6900;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.cta-btn:hover {
+  background: #e65c00;
+}
+.login-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.login-btn:hover {
+  background: #f5f6fa;
+} 
