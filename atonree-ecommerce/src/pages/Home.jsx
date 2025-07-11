@@ -21,6 +21,18 @@ const Home = ({ favorites, onFavorite }) => {
   // State loading cho search/filter
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
 
+  // Lưu lịch sử xem sản phẩm vào localStorage
+  const handleShowDetail = (product) => {
+    setSelectedProduct(product);
+    // Lưu vào localStorage
+    const history = JSON.parse(localStorage.getItem('history') || '[]');
+    // Xoá trùng
+    const filtered = history.filter(item => item.id !== product.id);
+    // Thêm mới lên đầu
+    const newHistory = [product, ...filtered];
+    localStorage.setItem('history', JSON.stringify(newHistory));
+  };
+
   // Callback cho nút gợi ý AI
   const handleSuggest = () => {
     setIsSuggesting(true);
@@ -28,11 +40,10 @@ const Home = ({ favorites, onFavorite }) => {
     // Giả lập gọi API (setTimeout)
     setTimeout(() => {
       try {
-        // Luôn luôn báo lỗi để test toast
-        throw new Error('API lỗi!');
-        // const data = getSuggestions('user1');
-        // setSuggestedProducts(data);
-        // setIsLoadingSuggest(false);
+        if (Math.random() < 0.15) throw new Error('API lỗi!');
+        const data = getSuggestions('user1');
+        setSuggestedProducts(data);
+        setIsLoadingSuggest(false);
       } catch (err) {
         toast.error('Không thể lấy gợi ý lúc này');
         setIsLoadingSuggest(false);
@@ -91,7 +102,7 @@ const Home = ({ favorites, onFavorite }) => {
           ) : (
             <ProductList
               products={suggestedProducts}
-              onDetail={setSelectedProduct}
+              onDetail={handleShowDetail}
               onFavorite={onFavorite}
               favorites={favorites}
             />
@@ -108,7 +119,7 @@ const Home = ({ favorites, onFavorite }) => {
           ) : (
             <ProductList
               products={filteredProducts}
-              onDetail={setSelectedProduct}
+              onDetail={handleShowDetail}
               onFavorite={onFavorite}
               favorites={favorites}
             />
