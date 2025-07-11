@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProductList from '../components/ProductList';
 import ProductModal from '../components/ProductModal';
+import { toast } from 'react-toastify';
 
 const History = () => {
   const [history, setHistory] = useState([]);
@@ -14,6 +15,7 @@ const History = () => {
   const handleClearHistory = () => {
     localStorage.removeItem('history');
     setHistory([]);
+    toast.success('Đã xóa lịch sử xem sản phẩm!');
   };
 
   return (
