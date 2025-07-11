@@ -6,6 +6,7 @@ import HeroBanner from '../components/HeroBanner';
 import SearchPanel from '../components/SearchPanel';
 import ProductModal from '../components/ProductModal';
 import SkeletonProductCard from '../components/SkeletonProductCard';
+import { toast } from 'react-toastify';
 
 const Home = ({ favorites, onFavorite }) => {
   const [search, setSearch] = useState('');
@@ -16,7 +17,6 @@ const Home = ({ favorites, onFavorite }) => {
   const [isSuggesting, setIsSuggesting] = useState(false);
   const [isLoadingSuggest, setIsLoadingSuggest] = useState(false);
   const [suggestedProducts, setSuggestedProducts] = useState([]);
-  const [suggestError, setSuggestError] = useState('');
 
   // State loading cho search/filter
   const [isLoadingSearch, setIsLoadingSearch] = useState(false);
@@ -25,16 +25,16 @@ const Home = ({ favorites, onFavorite }) => {
   const handleSuggest = () => {
     setIsSuggesting(true);
     setIsLoadingSuggest(true);
-    setSuggestError('');
     // Giả lập gọi API (setTimeout)
     setTimeout(() => {
       try {
-        if (Math.random() < 0.15) throw new Error('API lỗi!');
-        const data = getSuggestions('user1');
-        setSuggestedProducts(data);
-        setIsLoadingSuggest(false);
+        // Luôn luôn báo lỗi để test toast
+        throw new Error('API lỗi!');
+        // const data = getSuggestions('user1');
+        // setSuggestedProducts(data);
+        // setIsLoadingSuggest(false);
       } catch (err) {
-        setSuggestError('Không thể lấy gợi ý lúc này');
+        toast.error('Không thể lấy gợi ý lúc này');
         setIsLoadingSuggest(false);
       }
     }, 1200);
@@ -44,7 +44,6 @@ const Home = ({ favorites, onFavorite }) => {
   const handleBackToList = () => {
     setIsSuggesting(false);
     setSuggestedProducts([]);
-    setSuggestError('');
   };
 
   // Callback cho nút tìm kiếm (có thể dùng chung với input)
@@ -89,8 +88,6 @@ const Home = ({ favorites, onFavorite }) => {
             <div style={{display: 'flex', gap: 24, justifyContent: 'center'}}>
               {[1,2,3,4].map(i => <SkeletonProductCard key={i} />)}
             </div>
-          ) : suggestError ? (
-            <div style={{color: 'red', margin: '16px 0'}}>{suggestError}</div>
           ) : (
             <ProductList
               products={suggestedProducts}
@@ -124,4 +121,4 @@ const Home = ({ favorites, onFavorite }) => {
     </div>
   );
 };
-export default Home; 
+export default Home;
