@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { products as mockProducts } from '../api/products';
 import ProductList from '../components/ProductList';
 import HeroBanner from '../components/HeroBanner';
@@ -9,6 +9,20 @@ const Home = () => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [favorites, setFavorites] = useState([]);
+
+  // Load favorites từ localStorage khi component mount
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
+    }
+  }, []);
+
+  // Lưu favorites vào localStorage khi thay đổi
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
 
   // Callback cho nút gợi ý AI (sẽ làm sau)
   const handleSuggest = () => {
@@ -18,6 +32,17 @@ const Home = () => {
   // Callback cho nút tìm kiếm (có thể dùng chung với input)
   const handleFind = () => {
     // Có thể trigger lại filter nếu muốn
+  };
+
+  // Toggle yêu thích sản phẩm
+  const handleFavorite = (productId) => {
+    setFavorites(prev => {
+      if (prev.includes(productId)) {
+        return prev.filter(id => id !== productId);
+      } else {
+        return [...prev, productId];
+      }
+    });
   };
 
   // Lọc sản phẩm theo tên và giá
@@ -42,7 +67,12 @@ const Home = () => {
         onFind={handleFind}
       />
       <h2 style={{textAlign: 'center', margin: '32px 0 16px 0'}}>Danh sách sản phẩm</h2>
-      <ProductList products={filteredProducts} onDetail={setSelectedProduct} />
+      <ProductList
+        products={filteredProducts}
+        onDetail={setSelectedProduct}
+        onFavorite={handleFavorite}
+        favorites={favorites}
+      />
       {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
       )}
