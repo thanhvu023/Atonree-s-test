@@ -1,48 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { products as mockProducts } from '../api/products';
+import { getSuggestions } from '../api/suggestions';
 import ProductList from '../components/ProductList';
 import HeroBanner from '../components/HeroBanner';
 import SearchPanel from '../components/SearchPanel';
 import ProductModal from '../components/ProductModal';
 
-const Home = () => {
+const Home = ({ favorites, onFavorite }) => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [favorites, setFavorites] = useState([]);
 
-  // Load favorites từ localStorage khi component mount
-  useEffect(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
-    }
-  }, []);
+  // State cho gợi ý thông minh
+  const [isSuggesting, setIsSuggesting] = useState(false);
+  const [isLoadingSuggest, setIsLoadingSuggest] = useState(false);
+  const [suggestedProducts, setSuggestedProducts] = useState([]);
+  const [suggestError, setSuggestError] = useState('');
 
-  // Lưu favorites vào localStorage khi thay đổi
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  // Callback cho nút gợi ý AI (sẽ làm sau)
+  // Callback cho nút gợi ý AI
   const handleSuggest = () => {
-    alert('Gợi ý sản phẩm phù hợp (sẽ tích hợp AI sau)');
+    setIsSuggesting(true);
+    setIsLoadingSuggest(true);
+    setSuggestError('');
+    // Giả lập gọi API (setTimeout)
+    setTimeout(() => {
+      try {
+        // Có thể random lỗi để test
+        if (Math.random() < 0.15) throw new Error('API lỗi!');
+        const data = getSuggestions('user1');
+        setSuggestedProducts(data);
+        setIsLoadingSuggest(false);
+      } catch (err) {
+        setSuggestError('Không thể lấy gợi ý lúc này');
+        setIsLoadingSuggest(false);
+      }
+    }, 1200);
+  };
+
+  // Quay lại danh sách sản phẩm bình thường
+  const handleBackToList = () => {
+    setIsSuggesting(false);
+    setSuggestedProducts([]);
+    setSuggestError('');
   };
 
   // Callback cho nút tìm kiếm (có thể dùng chung với input)
   const handleFind = () => {
     // Có thể trigger lại filter nếu muốn
-  };
-
-  // Toggle yêu thích sản phẩm
-  const handleFavorite = (productId) => {
-    setFavorites(prev => {
-      if (prev.includes(productId)) {
-        return prev.filter(id => id !== productId);
-      } else {
-        return [...prev, productId];
-      }
-    });
   };
 
   // Lọc sản phẩm theo tên và giá
@@ -66,13 +70,34 @@ const Home = () => {
         onSuggest={handleSuggest}
         onFind={handleFind}
       />
-      <h2 style={{textAlign: 'center', margin: '32px 0 16px 0'}}>Danh sách sản phẩm</h2>
-      <ProductList
-        products={filteredProducts}
-        onDetail={setSelectedProduct}
-        onFavorite={handleFavorite}
-        favorites={favorites}
-      />
+      {isSuggesting ? (
+        <div style={{textAlign: 'center', margin: '32px 0'}}>
+          <h2>Sản phẩm gợi ý cho bạn</h2>
+          {isLoadingSuggest ? (
+            <div>Đang lấy gợi ý...</div>
+          ) : suggestError ? (
+            <div style={{color: 'red', margin: '16px 0'}}>{suggestError}</div>
+          ) : (
+            <ProductList
+              products={suggestedProducts}
+              onDetail={setSelectedProduct}
+              onFavorite={onFavorite}
+              favorites={favorites}
+            />
+          )}
+          <button onClick={handleBackToList} style={{marginTop: 24, background: '#27ae60', color: '#fff', border: 'none', borderRadius: 4, padding: '8px 20px', cursor: 'pointer'}}>Quay lại</button>
+        </div>
+      ) : (
+        <>
+          <h2 style={{textAlign: 'center', margin: '32px 0 16px 0'}}>Danh sách sản phẩm</h2>
+          <ProductList
+            products={filteredProducts}
+            onDetail={setSelectedProduct}
+            onFavorite={onFavorite}
+            favorites={favorites}
+          />
+        </>
+      )}
       {selectedProduct && (
         <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
       )}
