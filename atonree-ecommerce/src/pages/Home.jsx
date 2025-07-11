@@ -5,6 +5,7 @@ import ProductList from '../components/ProductList';
 import HeroBanner from '../components/HeroBanner';
 import SearchPanel from '../components/SearchPanel';
 import ProductModal from '../components/ProductModal';
+import SkeletonProductCard from '../components/SkeletonProductCard';
 
 const Home = ({ favorites, onFavorite }) => {
   const [search, setSearch] = useState('');
@@ -17,6 +18,9 @@ const Home = ({ favorites, onFavorite }) => {
   const [suggestedProducts, setSuggestedProducts] = useState([]);
   const [suggestError, setSuggestError] = useState('');
 
+  // State loading cho search/filter
+  const [isLoadingSearch, setIsLoadingSearch] = useState(false);
+
   // Callback cho nút gợi ý AI
   const handleSuggest = () => {
     setIsSuggesting(true);
@@ -25,7 +29,6 @@ const Home = ({ favorites, onFavorite }) => {
     // Giả lập gọi API (setTimeout)
     setTimeout(() => {
       try {
-        // Có thể random lỗi để test
         if (Math.random() < 0.15) throw new Error('API lỗi!');
         const data = getSuggestions('user1');
         setSuggestedProducts(data);
@@ -48,6 +51,15 @@ const Home = ({ favorites, onFavorite }) => {
   const handleFind = () => {
     // Có thể trigger lại filter nếu muốn
   };
+
+  // Khi search/filter thay đổi, giả lập loading
+  React.useEffect(() => {
+    if (!isSuggesting) {
+      setIsLoadingSearch(true);
+      const timeout = setTimeout(() => setIsLoadingSearch(false), 700);
+      return () => clearTimeout(timeout);
+    }
+  }, [search, filter, isSuggesting]);
 
   // Lọc sản phẩm theo tên và giá
   const filteredProducts = mockProducts.filter((product) => {
@@ -74,7 +86,9 @@ const Home = ({ favorites, onFavorite }) => {
         <div style={{textAlign: 'center', margin: '32px 0'}}>
           <h2>Sản phẩm gợi ý cho bạn</h2>
           {isLoadingSuggest ? (
-            <div>Đang lấy gợi ý...</div>
+            <div style={{display: 'flex', gap: 24, justifyContent: 'center'}}>
+              {[1,2,3,4].map(i => <SkeletonProductCard key={i} />)}
+            </div>
           ) : suggestError ? (
             <div style={{color: 'red', margin: '16px 0'}}>{suggestError}</div>
           ) : (
@@ -90,12 +104,18 @@ const Home = ({ favorites, onFavorite }) => {
       ) : (
         <>
           <h2 style={{textAlign: 'center', margin: '32px 0 16px 0'}}>Danh sách sản phẩm</h2>
-          <ProductList
-            products={filteredProducts}
-            onDetail={setSelectedProduct}
-            onFavorite={onFavorite}
-            favorites={favorites}
-          />
+          {isLoadingSearch ? (
+            <div style={{display: 'flex', gap: 24, justifyContent: 'center'}}>
+              {[1,2,3,4].map(i => <SkeletonProductCard key={i} />)}
+            </div>
+          ) : (
+            <ProductList
+              products={filteredProducts}
+              onDetail={setSelectedProduct}
+              onFavorite={onFavorite}
+              favorites={favorites}
+            />
+          )}
         </>
       )}
       {selectedProduct && (
