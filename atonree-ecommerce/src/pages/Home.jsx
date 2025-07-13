@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { products as mockProducts } from '../api/products';
 import { getSuggestions } from '../api/suggestions';
 import ProductList from '../components/ProductList';
+import ProductStats from '../components/ProductStats';
 import HeroBanner from '../components/HeroBanner';
 import SearchPanel from '../components/SearchPanel';
 import ProductModal from '../components/ProductModal';
@@ -12,6 +13,7 @@ const Home = ({ favorites, onFavorite }) => {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showStats, setShowStats] = useState(false);
 
   // State cho gợi ý thông minh
   const [isSuggesting, setIsSuggesting] = useState(false);
@@ -81,6 +83,9 @@ const Home = ({ favorites, onFavorite }) => {
     return matchName && matchPrice;
   });
 
+  // Lấy history từ localStorage
+  const history = JSON.parse(localStorage.getItem('history') || '[]');
+
   return (
     <div>
       <HeroBanner />
@@ -92,6 +97,32 @@ const Home = ({ favorites, onFavorite }) => {
         onSuggest={handleSuggest}
         onFind={handleFind}
       />
+      
+      {/* Nút toggle stats */}
+      <div style={{ textAlign: 'center', margin: '16px 0' }}>
+        <button
+          onClick={() => setShowStats(!showStats)}
+          style={{
+            background: showStats ? '#e74c3c' : '#27ae60',
+            color: '#fff',
+            border: 'none',
+            borderRadius: 6,
+            padding: '8px 16px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          {showStats ? 'Ẩn thống kê' : 'Xem thống kê'}
+        </button>
+      </div>
+      
+      {showStats && (
+        <ProductStats 
+          products={mockProducts}
+          favorites={favorites}
+          history={history}
+        />
+      )}
       {isSuggesting ? (
         <div style={{textAlign: 'center', margin: '32px 0'}}>
           <h2>Sản phẩm gợi ý cho bạn</h2>

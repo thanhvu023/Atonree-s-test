@@ -1,10 +1,14 @@
 import React from 'react';
 import ProductCard from './ProductCard';
+import '../styles/ProductList.css';
 
 const ProductList = ({ products, onDetail, onFavorite, favorites }) => {
-  if (!products.length) return <div>Không có sản phẩm nào.</div>;
+  if (!products.length) {
+    return <div className="product-list-empty">Không có sản phẩm nào.</div>;
+  }
+  
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, justifyContent: 'center' }}>
+    <div className="product-list">
       {products.map(product => (
         <ProductCard
           key={product.id}
