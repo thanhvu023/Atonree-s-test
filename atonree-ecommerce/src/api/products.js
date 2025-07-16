@@ -67,7 +67,7 @@ export const products = [
     id: 8,
     name: 'Tiếng Anh Công nghệ',
     price: 1100000,
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop',
+    image: 'https://efis.edu.vn/wp-content/uploads/2020/06/tieng-anh-va-cong-nghe-1.png?w=400&h=300&fit=crop',
     shortDesc: 'Tiếng Anh chuyên ngành công nghệ thông tin',
     longDesc: 'Khóa học tiếng Anh chuyên ngành công nghệ thông tin. Học các thuật ngữ kỹ thuật, đọc tài liệu chuyên ngành và giao tiếp trong môi trường IT.',
     rating: 4.6
