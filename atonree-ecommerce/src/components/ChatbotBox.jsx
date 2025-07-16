@@ -39,7 +39,7 @@ const ChatbotBox = ({ onSend }) => {
     <>
       {!open && (
         <button className="chatbot-fab" onClick={() => setOpen(true)}>
-          💬 Chat AI
+        
         </button>
       )}
       {open && (

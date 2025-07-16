@@ -113,7 +113,7 @@
 .login-btn {
   background: none;
   border: 1px solid var(--gray-300);
-  color: var(--gray-700);
+  color: var(--white);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -126,6 +126,7 @@
   border-color: var(--gray-400);
   transform: translateY(-1px);
   box-shadow: var(--shadow-sm);
+  color : var(--black)
 }
 
 /* Cart Icon Styles */
