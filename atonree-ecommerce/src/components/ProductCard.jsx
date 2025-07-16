@@ -1,14 +1,26 @@
 import React from 'react';
 import '../styles/ProductCard.css';
+import { useFavorites } from '../hooks/useFavorites';
 
-const ProductCard = ({ product, onDetail, onFavorite, isFavorite }) => {
+const ProductCard = ({ product, onDetail }) => {
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+
+  const handleToggleFavorite = (e) => {
+    e.stopPropagation();
+    if (isFavorite(product.id)) {
+      removeFromFavorites(product.id);
+    } else {
+      addToFavorites(product);
+    }
+  };
+
   return (
     <div className="product-card">
       <button
-        onClick={() => onFavorite(product.id)}
-        className={`favorite-button ${isFavorite ? 'favorited' : ''}`}
+        onClick={handleToggleFavorite}
+        className={`favorite-button ${isFavorite(product.id) ? 'favorited' : ''}`}
       >
-        {isFavorite ? '❤️' : '🤍'}
+        {isFavorite(product.id) ? '❤️' : '🤍'}
       </button>
       <img 
         src={product.image || 'https://via.placeholder.com/200'} 

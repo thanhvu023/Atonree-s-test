@@ -3,8 +3,8 @@ import '../styles/ProductStats.css';
 
 const ProductStats = ({ products, favorites, history }) => {
   const totalProducts = products.length;
-  const totalFavorites = favorites.length;
-  const totalHistory = history.length;
+  const totalFavorites = favorites?.length;
+  const totalHistory = history?.length;
   
   const avgPrice = products.length > 0 
     ? products.reduce((sum, p) => sum + p.price, 0) / products.length 

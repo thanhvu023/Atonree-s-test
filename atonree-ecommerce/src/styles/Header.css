@@ -1,77 +1,131 @@
 .antoree-header {
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  height: 80px;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  height: var(--header-height);
   display: flex;
   align-items: center;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: var(--z-sticky);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid var(--gray-200);
 }
 .header-container {
-  max-width: 1200px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  padding: 0 24px;
+  padding: 0 var(--spacing-6);
 }
 .logo {
   display: flex;
   align-items: center;
   height: 40px;
+  transition: transform var(--transition-fast);
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 .nav-menu {
   display: flex;
-  gap: 32px;
+  gap: var(--spacing-8);
+  align-items: center;
 }
 .nav-menu a {
-  font-family: 'Roboto', Arial, sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  color: #333;
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  color: var(--gray-700);
   text-decoration: none;
-  transition: color 0.2s, border-bottom 0.2s;
-  padding-bottom: 2px;
+  transition: all var(--transition-fast);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  position: relative;
 }
 .nav-menu a:hover {
-  color: #27ae60;
-  border-bottom: 2px solid #27ae60;
+  color: var(--primary-color);
+  background-color: var(--gray-100);
+  transform: translateY(-1px);
+}
+
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-color);
+  transition: all var(--transition-fast);
+  transform: translateX(-50%);
+}
+
+.nav-menu a:hover::after {
+  width: 100%;
 }
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--spacing-4);
 }
 .cta-btn {
-  background: #FF6900;
-  color: #fff;
+  background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%);
+  color: var(--white);
   border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-weight: 600;
-  font-size: 14px;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2) var(--spacing-4);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
 }
 .cta-btn:hover {
-  background: #e65c00;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.cta-btn:active {
+  transform: translateY(0);
+}
+
+.cta-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.cta-btn:hover::before {
+  left: 100%;
 }
 .login-btn {
   background: none;
-  border: none;
-  color: #333;
-  font-size: 14px;
-  font-weight: 500;
+  border: 1px solid var(--gray-300);
+  color: var(--gray-700);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 4px;
-  transition: background 0.2s;
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
 }
 .login-btn:hover {
-  background: #f5f6fa;
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Cart Icon Styles */

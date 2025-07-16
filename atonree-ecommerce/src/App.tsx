@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header.jsx';
 import Home from './pages/Home.jsx';
 import Favorites from './pages/Favorites.jsx';
@@ -11,31 +11,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
-  const [favorites, setFavorites] = useState([]);
-
-  useEffect(() => {
-    const savedFavorites = localStorage.getItem('favorites');
-    if (savedFavorites) {
-      setFavorites(JSON.parse(savedFavorites));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  const handleFavorite = (productId) => {
-    setFavorites(prev => {
-      if (prev.includes(productId)) {
-        return prev.filter(id => id !== productId);
-      } else {
-        return [...prev, productId];
-      }
-    });
-  };
 
   // Hàm gọi API gợi ý cho ChatbotBox
-  const handleChatbotSuggest = async (userId, keyword) => {
+  const handleChatbotSuggest = async (userId: string, keyword: string) => {
     // Giả lập delay
     await new Promise(res => setTimeout(res, 700));
     return getSuggestions(userId, keyword);
@@ -90,9 +68,9 @@ function App() {
         </button>
       </div>
       {currentPage === 'home' ? (
-        <Home favorites={favorites} onFavorite={handleFavorite} />
+        <Home />
       ) : currentPage === 'favorites' ? (
-        <Favorites favorites={favorites} onFavorite={handleFavorite} />
+        <Favorites />
       ) : (
         <History />
       )}
