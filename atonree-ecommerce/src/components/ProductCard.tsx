@@ -23,7 +23,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <h3>{product.name}</h3>
       <p>{product.description as string}</p>
       <p className="price">{product.price}₫</p>
-      <button onClick={handleAddToCart}>Thêm vào giỏ</button>
+      <div className="product-card-actions">
+        <button className="view-details-btn">Xem chi tiết</button>
+        <button className="add-to-cart-btn" onClick={handleAddToCart}>
+          🛒 Thêm vào giỏ
+        </button>
+      </div>
     </div>
   );
 };
